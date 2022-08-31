@@ -10,12 +10,16 @@ import Profile from './pages/Profile';
 import ProfileEdit from './pages/ProfileEdit';
 import NotFound from './pages/NotFound';
 import Loading from './components/Loading';
+import searchAlbumsAPI from './services/searchAlbumsAPI';
 
 class App extends React.Component {
   state = {
     username: '',
     isLoading: false,
     artist: '',
+    searchedArtist: '',
+    artistAlbums: [],
+    artistNotFound: false,
   };
 
   componentDidMount() {
@@ -44,14 +48,30 @@ class App extends React.Component {
   retrieveUser = async () => {
     this.toggleLoading();
     const { name } = await getUser();
+    this.toggleLoading();
+
     this.setState({
       username: name,
     });
+  };
+
+  searchArtist = async () => {
+    const { artist } = this.state;
+    this.setState({ searchedArtist: artist });
+
     this.toggleLoading();
+    const response = await searchAlbumsAPI(artist);
+    this.toggleLoading();
+
+    this.setState({
+      artist: '',
+      artistAlbums: [...response],
+      artistNotFound: !response.length > 0,
+    });
   };
 
   render() {
-    const { state, handleLogin, handleChange } = this;
+    const { state, handleLogin, handleChange, searchArtist } = this;
     const { isLoading } = this.state;
 
     return (
@@ -64,7 +84,11 @@ class App extends React.Component {
                 exact
                 path="/search"
                 render={ () => (
-                  <Search { ...state } handleChange={ handleChange } />
+                  <Search
+                    { ...state }
+                    handleChange={ handleChange }
+                    searchArtist={ searchArtist }
+                  />
                 ) }
               />
 
