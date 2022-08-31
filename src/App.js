@@ -26,10 +26,6 @@ class App extends React.Component {
     this.retrieveUser();
   }
 
-  // toggleLoading = () => {
-  //   this.setState((prevState) => ({ isLoading: !prevState.isLoading }));
-  // };
-
   handleChange = ({ target: { name, value } }) => {
     this.setState({ [name]: value });
   };
@@ -76,7 +72,6 @@ class App extends React.Component {
       handleLogin,
       handleChange,
       searchArtist,
-      // toggleLoading,
     } = this;
     const { isLoading } = this.state;
 
@@ -104,7 +99,6 @@ class App extends React.Component {
                 render={ (props) => (<Album
                   { ...props }
                   { ...state }
-                  // toggleLoading={ toggleLoading }
                 />) }
               />
 

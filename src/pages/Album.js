@@ -18,7 +18,6 @@ export default class Album extends React.Component {
   }
 
   fetchMusics = async () => {
-    const { isLoading } = this.state;
     const { history } = this.props;
     const { pathname } = history.location;
     const albumId = pathname.split('/')[2];
@@ -42,26 +41,22 @@ export default class Album extends React.Component {
     return (
       <div data-testid="page-album">
         <Header />
+        {isLoading
+          ? <Loading />
+          : (
+            <div>
+              <h1 data-testid="artist-name">
+                {artistName}
+              </h1>
+              <p data-testid="album-name">{`${collectionName} - ${artistName}`}</p>
 
-        {
-          isLoading
-            ? <Loading />
-            : (
-              <div>
-                <h1 data-testid="artist-name">
-                  {artistName}
-                </h1>
-                <p data-testid="album-name">{`${collectionName} - ${artistName}`}</p>
-
-                <ul>
-                  {albumTracks.map((track) => (
-                    <MusicCard key={ track.trackName } { ...track } />
-                  ))}
-                </ul>
-              </div>
-            )
-        }
-
+              <ul>
+                {albumTracks.map((track) => (
+                  <MusicCard key={ track.trackName } { ...track } />
+                ))}
+              </ul>
+            </div>
+          )}
       </div>
     );
   }
@@ -72,10 +67,5 @@ Album.propTypes = {
     location: PropTypes.shape({
       pathname: PropTypes.string,
     }),
-  }),
-}.isRequired;
-
-/*
-    Liste todas as músicas do álbum na tela. Para isso, crie um componente chamado MusicCard que deverá exibir o nome da música (propriedade trackName no objeto recebido pela API) e um player para tocar o preview da música (propriedade previewUrl no objeto recebido pela API).
-
-*/
+  }).isRequired,
+};
