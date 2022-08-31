@@ -26,9 +26,9 @@ class App extends React.Component {
     this.retrieveUser();
   }
 
-  toggleLoading = () => {
-    this.setState((prevState) => ({ isLoading: !prevState.isLoading }));
-  };
+  // toggleLoading = () => {
+  //   this.setState((prevState) => ({ isLoading: !prevState.isLoading }));
+  // };
 
   handleChange = ({ target: { name, value } }) => {
     this.setState({ [name]: value });
@@ -40,15 +40,15 @@ class App extends React.Component {
       name: username,
     };
 
-    this.toggleLoading();
+    this.setState({ isLoading: true });
     await createUser(userInfo);
-    this.toggleLoading();
+    this.setState({ isLoading: false });
   };
 
   retrieveUser = async () => {
-    this.toggleLoading();
+    this.setState({ isLoading: true });
     const { name } = await getUser();
-    this.toggleLoading();
+    this.setState({ isLoading: false });
 
     this.setState({
       username: name,
@@ -59,9 +59,9 @@ class App extends React.Component {
     const { artist } = this.state;
     this.setState({ searchedArtist: artist });
 
-    this.toggleLoading();
+    this.setState({ isLoading: true });
     const response = await searchAlbumsAPI(artist);
-    this.toggleLoading();
+    this.setState({ isLoading: false });
 
     this.setState({
       artist: '',
@@ -71,7 +71,13 @@ class App extends React.Component {
   };
 
   render() {
-    const { state, handleLogin, handleChange, searchArtist } = this;
+    const {
+      state,
+      handleLogin,
+      handleChange,
+      searchArtist,
+      // toggleLoading,
+    } = this;
     const { isLoading } = this.state;
 
     return (
@@ -95,7 +101,11 @@ class App extends React.Component {
               <Route
                 exact
                 path="/album/:id"
-                render={ (props) => <Album { ...props } /> }
+                render={ (props) => (<Album
+                  { ...props }
+                  { ...state }
+                  // toggleLoading={ toggleLoading }
+                />) }
               />
 
               <Route exact path="/favorites" component={ Favorites } />
