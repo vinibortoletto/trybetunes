@@ -52,7 +52,11 @@ export default class Album extends React.Component {
 
               <ul>
                 {albumTracks.map((track) => (
-                  <MusicCard key={ track.trackName } { ...track } />
+                  <MusicCard
+                    key={ track.trackName }
+                    { ...track }
+                    albumTracks={ albumTracks }
+                  />
                 ))}
               </ul>
             </div>
