@@ -15,6 +15,7 @@ class App extends React.Component {
   state = {
     username: '',
     isLoading: false,
+    artist: '',
   };
 
   componentDidMount() {
@@ -59,7 +60,13 @@ class App extends React.Component {
           ? <Loading />
           : (
             <Switch>
-              <Route exact path="/search" render={ () => <Search { ...state } /> } />
+              <Route
+                exact
+                path="/search"
+                render={ () => (
+                  <Search { ...state } handleChange={ handleChange } />
+                ) }
+              />
 
               <Route
                 exact
