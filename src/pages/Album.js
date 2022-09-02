@@ -3,6 +3,7 @@ import React from 'react';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
 import MusicCard from '../components/MusicCard';
+import { addSong, getFavoriteSongs } from '../services/favoriteSongsAPI';
 import getMusics from '../services/musicsAPI';
 
 export default class Album extends React.Component {
@@ -11,15 +12,34 @@ export default class Album extends React.Component {
     albumTracks: [],
     artistName: '',
     collectionName: '',
+    favoriteTracks: [],
   };
 
   componentDidMount() {
     this.fetchMusics();
+    // this.fetchFavoriteTracks();
   }
 
-  // toggleLoading = () => {
-  //   this.setState((prevState) => ({ isLoading: !prevState.isLoading }));
-  // };
+  fetchFavoriteTracks = async () => {
+    const response = await getFavoriteSongs();
+    this.setState({ favoriteTracks: [...response] });
+  };
+
+  handleChange = async ({ target: { id, checked } }) => {
+    this.setState({ isLoading: true });
+
+    const { albumTracks } = this.state;
+    const selectedTrack = albumTracks.find(({ trackId }) => trackId.toString() === id);
+
+    if (checked) {
+      await addSong(selectedTrack);
+      await this.fetchFavoriteTracks();
+    } else {
+      // removeSong
+    }
+
+    this.setState({ isLoading: false });
+  };
 
   fetchMusics = async () => {
     const { history } = this.props;
@@ -27,15 +47,17 @@ export default class Album extends React.Component {
     const albumId = pathname.split('/')[2];
 
     this.setState({ isLoading: true });
-    const response = await getMusics(albumId);
+    const musicsResponse = await getMusics(albumId);
+    const favoriteSongsResponse = await getFavoriteSongs();
     this.setState({ isLoading: false });
 
-    const tracks = response.filter((album) => album.trackName);
+    const tracks = musicsResponse.filter((album) => album.trackName);
 
     this.setState({
       albumTracks: [...tracks],
-      artistName: response[0].artistName,
-      collectionName: response[0].collectionName,
+      artistName: musicsResponse[0].artistName,
+      collectionName: musicsResponse[0].collectionName,
+      favoriteTracks: [...favoriteSongsResponse],
     });
   };
 
@@ -45,7 +67,11 @@ export default class Album extends React.Component {
       artistName,
       collectionName,
       isLoading,
+
+      favoriteTracks,
     } = this.state;
+
+    const { handleChange } = this;
 
     return (
       <div data-testid="page-album">
@@ -64,8 +90,10 @@ export default class Album extends React.Component {
                   <MusicCard
                     key={ track.trackName }
                     { ...track }
-                    track={ track }
-                    // toggleLoading={ this.toggleLoading }
+                    // track={ track }
+                    checked={ favoriteTracks
+                      .some((favoriteTrack) => favoriteTrack.trackId === track.trackId) }
+                    handleChange={ handleChange }
                   />
                 ))}
               </ul>
