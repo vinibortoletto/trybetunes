@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import { shape, string } from 'prop-types';
 import React from 'react';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
@@ -7,15 +7,19 @@ import getMusics from '../services/musicsAPI';
 
 export default class Album extends React.Component {
   state = {
+    isLoading: false,
     albumTracks: [],
     artistName: '',
     collectionName: '',
-    isLoading: false,
   };
 
   componentDidMount() {
     this.fetchMusics();
   }
+
+  // toggleLoading = () => {
+  //   this.setState((prevState) => ({ isLoading: !prevState.isLoading }));
+  // };
 
   fetchMusics = async () => {
     const { history } = this.props;
@@ -36,7 +40,12 @@ export default class Album extends React.Component {
   };
 
   render() {
-    const { albumTracks, artistName, collectionName, isLoading } = this.state;
+    const {
+      albumTracks,
+      artistName,
+      collectionName,
+      isLoading,
+    } = this.state;
 
     return (
       <div data-testid="page-album">
@@ -55,7 +64,8 @@ export default class Album extends React.Component {
                   <MusicCard
                     key={ track.trackName }
                     { ...track }
-                    albumTracks={ albumTracks }
+                    track={ track }
+                    // toggleLoading={ this.toggleLoading }
                   />
                 ))}
               </ul>
@@ -67,9 +77,7 @@ export default class Album extends React.Component {
 }
 
 Album.propTypes = {
-  history: PropTypes.shape({
-    location: PropTypes.shape({
-      pathname: PropTypes.string,
-    }),
+  history: shape({
+    location: shape({ pathname: string }),
   }).isRequired,
 };

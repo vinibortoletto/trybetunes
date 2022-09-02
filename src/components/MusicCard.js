@@ -1,20 +1,34 @@
-import PropTypes from 'prop-types';
+import { string, number, shape } from 'prop-types';
 import React from 'react';
-import { addSong } from '../services/favoriteSongsAPI';
+import { addSong, getFavoriteSongs } from '../services/favoriteSongsAPI';
 import Loading from './Loading';
 
 export default class MusicCard extends React.Component {
   state = {
-    favoriteMusic: false,
     isLoading: false,
+    favoriteTracks: [],
   };
 
-  handleChange = async ({ target: { checked } }) => {
-    const { albumTracks } = this.props;
-    this.setState({ favoriteMusic: checked });
+  componentDidMount() {
+    this.fetchFavoriteTracks();
+  }
 
+  fetchFavoriteTracks = async () => {
+    const response = await getFavoriteSongs();
+    this.setState({ favoriteTracks: [...response] });
+  };
+
+  handleChange = async ({ target }) => {
     this.setState({ isLoading: true });
-    await addSong(albumTracks);
+
+    const { track } = this.props;
+
+    if (target.checked) {
+      await addSong(track);
+      await this.fetchFavoriteTracks();
+    } else {
+      // removeSong
+    }
     this.setState({ isLoading: false });
   };
 
@@ -25,36 +39,34 @@ export default class MusicCard extends React.Component {
       trackId,
     } = this.props;
 
-    const { favoriteMusic, isLoading } = this.state;
+    const { isLoading, favoriteTracks } = this.state;
     const { handleChange } = this;
 
     return (
       <li>
-        {isLoading
-          ? <Loading />
-          : (
-            <>
-              <p>{trackName}</p>
-              <audio controls data-testid="audio-component">
-                <track kind="captions" />
-                <source src={ previewUrl } type="audio/ogg" />
-              </audio>
+        {isLoading && <Loading />}
 
-              <div>
-                <label htmlFor="favoriteMusic">
-                  <input
-                    type="checkbox"
-                    data-testid={ `checkbox-music-${trackId}` }
-                    name="favoriteMusic"
-                    id="favoriteMusic"
-                    checked={ favoriteMusic }
-                    onChange={ handleChange }
-                  />
-                  Favorita
-                </label>
-              </div>
-            </>
-          )}
+        <div>
+          <p>{trackName}</p>
+          <audio controls data-testid="audio-component">
+            <track kind="captions" />
+            <source src={ previewUrl } type="audio/ogg" />
+          </audio>
+
+          <div>
+            <label htmlFor={ trackId }>
+              <input
+                type="checkbox"
+                data-testid={ `checkbox-music-${trackId}` }
+                id={ trackId }
+                checked={ favoriteTracks
+                  .some((favoriteTrack) => favoriteTrack.trackId === trackId) }
+                onChange={ handleChange }
+              />
+              Favorita
+            </label>
+          </div>
+        </div>
       </li>
     );
   }
@@ -67,10 +79,8 @@ MusicCard.defaultProps = {
 };
 
 MusicCard.propTypes = {
-  previewUrl: PropTypes.string,
-  trackName: PropTypes.string,
-  trackId: PropTypes.number,
-  albumTracks: PropTypes.arrayOf(
-    PropTypes.shape({}),
-  ).isRequired,
+  previewUrl: string,
+  trackName: string,
+  trackId: number,
+  track: shape({}).isRequired,
 };
