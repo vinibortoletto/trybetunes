@@ -3,7 +3,7 @@ import React from 'react';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
 import MusicCard from '../components/MusicCard';
-import { addSong, getFavoriteSongs } from '../services/favoriteSongsAPI';
+import { getFavoriteSongs } from '../services/favoriteSongsAPI';
 import getMusics from '../services/musicsAPI';
 
 export default class Album extends React.Component {
@@ -17,28 +17,11 @@ export default class Album extends React.Component {
 
   componentDidMount() {
     this.fetchMusics();
-    // this.fetchFavoriteTracks();
   }
 
   fetchFavoriteTracks = async () => {
     const response = await getFavoriteSongs();
     this.setState({ favoriteTracks: [...response] });
-  };
-
-  handleChange = async ({ target: { id, checked } }) => {
-    this.setState({ isLoading: true });
-
-    const { albumTracks } = this.state;
-    const selectedTrack = albumTracks.find(({ trackId }) => trackId.toString() === id);
-
-    if (checked) {
-      await addSong(selectedTrack);
-      await this.fetchFavoriteTracks();
-    } else {
-      // removeSong
-    }
-
-    this.setState({ isLoading: false });
   };
 
   fetchMusics = async () => {
@@ -71,7 +54,7 @@ export default class Album extends React.Component {
       favoriteTracks,
     } = this.state;
 
-    const { handleChange } = this;
+    const { fetchFavoriteTracks } = this;
 
     return (
       <div data-testid="page-album">
@@ -90,10 +73,10 @@ export default class Album extends React.Component {
                   <MusicCard
                     key={ track.trackName }
                     { ...track }
-                    // track={ track }
+                    albumTracks={ albumTracks }
+                    fetchFavoriteTracks={ fetchFavoriteTracks }
                     checked={ favoriteTracks
                       .some((favoriteTrack) => favoriteTrack.trackId === track.trackId) }
-                    handleChange={ handleChange }
                   />
                 ))}
               </ul>

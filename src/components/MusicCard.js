@@ -1,53 +1,44 @@
-import { string, number, shape } from 'prop-types';
+import { string, number, bool, arrayOf, shape, func } from 'prop-types';
 import React from 'react';
-import { addSong, getFavoriteSongs } from '../services/favoriteSongsAPI';
+import { addSong } from '../services/favoriteSongsAPI';
 import Loading from './Loading';
 
 export default class MusicCard extends React.Component {
   state = {
     isLoading: false,
-    // favoriteTracks: [],
   };
 
-  // componentDidMount() {
-  //   this.fetchFavoriteTracks();
-  // }
+  handleChange = async ({ target: { id, checked } }) => {
+    this.setState({ isLoading: true });
 
-  // fetchFavoriteTracks = async () => {
-  //   const response = await getFavoriteSongs();
-  //   this.setState({ favoriteTracks: [...response] });
-  // };
+    const { albumTracks, fetchFavoriteTracks } = this.props;
+    const selectedTrack = albumTracks.find(({ trackId }) => trackId.toString() === id);
 
-  // handleChange = async ({ target }) => {
-  //   this.setState({ isLoading: true });
+    if (checked) {
+      await addSong(selectedTrack);
+      await fetchFavoriteTracks();
+    } else {
+      // removeSong
+    }
 
-  //   const { track } = this.props;
-
-  //   if (target.checked) {
-  //     await addSong(track);
-  //     await this.fetchFavoriteTracks();
-  //   } else {
-  //     // removeSong
-  //   }
-  //   this.setState({ isLoading: false });
-  // };
+    this.setState({ isLoading: false });
+  };
 
   render() {
     const {
       trackName,
       previewUrl,
       trackId,
-
       checked,
-      handleChange,
     } = this.props;
 
     const {
       isLoading,
-      // favoriteTracks,
     } = this.state;
 
-    // const { handleChange } = this;
+    const {
+      handleChange,
+    } = this;
 
     return (
       <li>
@@ -66,8 +57,6 @@ export default class MusicCard extends React.Component {
                 type="checkbox"
                 data-testid={ `checkbox-music-${trackId}` }
                 id={ trackId }
-                // checked={ favoriteTracks
-                //   .some((favoriteTrack) => favoriteTrack.trackId === trackId) }
                 checked={ checked }
                 onChange={ handleChange }
               />
@@ -90,5 +79,7 @@ MusicCard.propTypes = {
   previewUrl: string,
   trackName: string,
   trackId: number,
-  // track: shape({}).isRequired,
+  checked: bool.isRequired,
+  albumTracks: arrayOf(shape({})).isRequired,
+  fetchFavoriteTracks: func.isRequired,
 };
