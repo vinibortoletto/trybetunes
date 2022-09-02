@@ -1,6 +1,6 @@
 import { string, number, bool, arrayOf, shape, func } from 'prop-types';
 import React from 'react';
-import { addSong } from '../services/favoriteSongsAPI';
+import { addSong, removeSong } from '../services/favoriteSongsAPI';
 import Loading from './Loading';
 
 export default class MusicCard extends React.Component {
@@ -18,7 +18,8 @@ export default class MusicCard extends React.Component {
       await addSong(selectedTrack);
       await fetchFavoriteTracks();
     } else {
-      // removeSong
+      await removeSong(selectedTrack);
+      await fetchFavoriteTracks();
     }
 
     this.setState({ isLoading: false });
