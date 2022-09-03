@@ -79,12 +79,16 @@ export default class Album extends React.Component {
   }
 }
 
+Album.defaultProps = {
+  favoriteTracks: [],
+};
+
 Album.propTypes = {
   history: shape({
     location: shape({ pathname: string }),
   }).isRequired,
 
-  favoriteTracks: arrayOf(shape({})).isRequired,
+  favoriteTracks: arrayOf(shape({})),
 
   fetchFavoriteTracks: func.isRequired,
 };

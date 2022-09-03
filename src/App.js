@@ -71,7 +71,7 @@ class App extends React.Component {
 
   fetchFavoriteTracks = async () => {
     const response = await getFavoriteSongs();
-    this.setState({ favoriteTracks: [...response] });
+    this.setState({ favoriteTracks: response });
   };
 
   render() {
