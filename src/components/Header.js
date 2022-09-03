@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 
 export default class Header extends React.Component {
   render() {
-    const { username } = this.props;
+    const { userName } = this.props;
 
     return (
       <header data-testid="header-component">
-        <p data-testid="header-user-name">{username}</p>
+        <p data-testid="header-user-name">{userName}</p>
         <ul>
           <li>
             <Link to="/search" data-testid="link-to-search">Pesquisar</Link>
@@ -27,9 +27,9 @@ export default class Header extends React.Component {
 }
 
 Header.defaultProps = {
-  username: '',
+  userName: '',
 };
 
 Header.propTypes = {
-  username: PropTypes.string,
+  userName: PropTypes.string,
 };

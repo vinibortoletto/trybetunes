@@ -1,12 +1,10 @@
-import PropTypes from 'prop-types';
+import { string, number, shape, arrayOf, func, bool } from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Header from '../components/Header';
 
 export default class Search extends React.Component {
   render() {
     const {
-      username,
       artist,
       searchedArtist,
       artistAlbums,
@@ -18,8 +16,6 @@ export default class Search extends React.Component {
 
     return (
       <div data-testid="page-search">
-        <Header username={ username } />
-
         <label htmlFor="artist">
           Pesquise um artista:
           <input
@@ -75,29 +71,27 @@ export default class Search extends React.Component {
 }
 
 Search.defaultProps = {
-  username: '',
   artist: '',
 };
 
 Search.propTypes = {
-  username: PropTypes.string,
-  artist: PropTypes.string,
-  searchedArtist: PropTypes.string.isRequired,
+  artist: string,
+  searchedArtist: string.isRequired,
 
-  artistAlbums: PropTypes.arrayOf(
-    PropTypes.shape({
-      artistId: PropTypes.number,
-      artistName: PropTypes.string,
-      collectionId: PropTypes.number,
-      collectionName: PropTypes.string,
-      collectionPrice: PropTypes.number,
-      artworkUrl100: PropTypes.string,
-      releaseDate: PropTypes.string,
-      trackCount: PropTypes.number,
+  artistAlbums: arrayOf(
+    shape({
+      artistId: number,
+      artistName: string,
+      collectionId: number,
+      collectionName: string,
+      collectionPrice: number,
+      artworkUrl100: string,
+      releaseDate: string,
+      trackCount: number,
     }),
   ).isRequired,
 
-  artistNotFound: PropTypes.bool.isRequired,
-  handleChange: PropTypes.func.isRequired,
-  searchArtist: PropTypes.func.isRequired,
+  artistNotFound: bool.isRequired,
+  handleChange: func.isRequired,
+  searchArtist: func.isRequired,
 };

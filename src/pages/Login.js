@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { string, func, shape } from 'prop-types';
 
 export default class Login extends React.Component {
   handleSubmit = (event) => {
@@ -11,20 +11,20 @@ export default class Login extends React.Component {
 
   render() {
     const { handleSubmit } = this;
-    const { username, handleChange } = this.props;
-    const usernameMinLength = 3;
+    const { userName, handleChange } = this.props;
+    const userNameMinLength = 3;
 
     return (
       <div data-testid="page-login">
         <h1>Login</h1>
         <form onSubmit={ handleSubmit }>
-          <label htmlFor="username">
+          <label htmlFor="userName">
             Nome de usuário:
             <input
               type="text"
               data-testid="login-name-input"
-              name="username"
-              value={ username }
+              name="userName"
+              value={ userName }
               onChange={ handleChange }
             />
           </label>
@@ -32,7 +32,7 @@ export default class Login extends React.Component {
           <button
             type="submit"
             data-testid="login-submit-button"
-            disabled={ username.length < usernameMinLength }
+            disabled={ userName.length < userNameMinLength }
           >
             Entrar
           </button>
@@ -43,14 +43,12 @@ export default class Login extends React.Component {
 }
 
 Login.defaultProps = {
-  username: '',
+  userName: '',
 };
 
 Login.propTypes = {
-  username: PropTypes.string,
-  handleChange: PropTypes.func.isRequired,
-  handleLogin: PropTypes.func.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }).isRequired,
+  userName: string,
+  handleChange: func.isRequired,
+  handleLogin: func.isRequired,
+  history: shape({ push: func }).isRequired,
 };

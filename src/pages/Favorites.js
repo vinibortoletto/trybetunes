@@ -1,7 +1,6 @@
 import React from 'react';
 import { func, arrayOf, shape } from 'prop-types';
 
-import Header from '../components/Header';
 import Loading from '../components/Loading';
 import MusicCard from '../components/MusicCard';
 
@@ -17,20 +16,17 @@ export default class Favorites extends React.Component {
         {isLoading
           ? <Loading />
           : (
-            <>
-              <Header />
-              <ul>
-                {favoriteTracks.map((track) => (
-                  <MusicCard
-                    key={ track.trackName }
-                    track={ track }
-                    fetchFavoriteTracks={ fetchFavoriteTracks }
-                    checked={ favoriteTracks
-                      .some(({ trackId }) => trackId === track.trackId) }
-                  />
-                ))}
-              </ul>
-            </>
+            <ul>
+              {favoriteTracks.map((track) => (
+                <MusicCard
+                  key={ track.trackName }
+                  track={ track }
+                  fetchFavoriteTracks={ fetchFavoriteTracks }
+                  checked={ favoriteTracks
+                    .some(({ trackId }) => trackId === track.trackId) }
+                />
+              ))}
+            </ul>
           )}
       </div>
     );

@@ -3,7 +3,6 @@ import { shape, string, func, arrayOf } from 'prop-types';
 
 import getMusics from '../services/musicsAPI';
 
-import Header from '../components/Header';
 import Loading from '../components/Loading';
 import MusicCard from '../components/MusicCard';
 
@@ -50,7 +49,6 @@ export default class Album extends React.Component {
 
     return (
       <div data-testid="page-album">
-        <Header />
         {isLoading
           ? <Loading />
           : (
