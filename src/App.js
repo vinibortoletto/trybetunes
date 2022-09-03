@@ -18,6 +18,7 @@ import Header from './components/Header';
 class App extends React.Component {
   state = {
     isLoading: false,
+    isSaveButtonDisabled: true,
 
     userName: '',
     userEmail: '',
@@ -105,9 +106,6 @@ class App extends React.Component {
     const {
       isLoading,
       userName,
-      userEmail,
-      userDescription,
-      userImage,
     } = this.state;
 
     return (
@@ -158,14 +156,20 @@ class App extends React.Component {
                   path="/profile"
                   render={ () => (
                     <Profile
-                      userName={ userName }
-                      userEmail={ userEmail }
-                      userDescription={ userDescription }
-                      userImage={ userImage }
+                      { ...state }
                     />) }
                 />
 
-                <Route exact path="/profile/edit" component={ ProfileEdit } />
+                <Route
+                  exact
+                  path="/profile/edit"
+                  render={ (props) => (
+                    <ProfileEdit
+                      { ...props }
+                      { ...state }
+                      handleChange={ handleChange }
+                    />) }
+                />
 
                 <Route
                   exact
