@@ -1,4 +1,4 @@
-import { string, number, bool, arrayOf, shape, func } from 'prop-types';
+import { string, number, bool, shape, func } from 'prop-types';
 import React from 'react';
 import { addSong, removeSong } from '../services/favoriteSongsAPI';
 import Loading from './Loading';
@@ -8,28 +8,24 @@ export default class MusicCard extends React.Component {
     isLoading: false,
   };
 
-  handleChange = async ({ target: { id, checked } }) => {
+  handleChange = async ({ target }) => {
     this.setState({ isLoading: true });
+    const { fetchFavoriteTracks, track } = this.props;
 
-    const { albumTracks, fetchFavoriteTracks } = this.props;
-    const selectedTrack = albumTracks.find(({ trackId }) => trackId.toString() === id);
+    if (target.checked) await addSong(track);
+    else await removeSong(track);
 
-    if (checked) {
-      await addSong(selectedTrack);
-      await fetchFavoriteTracks();
-    } else {
-      await removeSong(selectedTrack);
-      await fetchFavoriteTracks();
-    }
-
+    await fetchFavoriteTracks();
     this.setState({ isLoading: false });
   };
 
   render() {
     const {
-      trackName,
-      previewUrl,
-      trackId,
+      track: {
+        trackName,
+        previewUrl,
+        trackId,
+      },
       checked,
     } = this.props;
 
@@ -77,10 +73,10 @@ MusicCard.defaultProps = {
 };
 
 MusicCard.propTypes = {
+  track: shape({}).isRequired,
   previewUrl: string,
   trackName: string,
   trackId: number,
   checked: bool.isRequired,
-  albumTracks: arrayOf(shape({})).isRequired,
   fetchFavoriteTracks: func.isRequired,
 };

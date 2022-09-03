@@ -11,6 +11,7 @@ import ProfileEdit from './pages/ProfileEdit';
 import NotFound from './pages/NotFound';
 import Loading from './components/Loading';
 import searchAlbumsAPI from './services/searchAlbumsAPI';
+import { getFavoriteSongs } from './services/favoriteSongsAPI';
 
 class App extends React.Component {
   state = {
@@ -20,10 +21,12 @@ class App extends React.Component {
     searchedArtist: '',
     artistAlbums: [],
     artistNotFound: false,
+    favoriteTracks: [],
   };
 
   componentDidMount() {
     this.retrieveUser();
+    this.fetchFavoriteTracks();
   }
 
   handleChange = ({ target: { name, value } }) => {
@@ -66,13 +69,20 @@ class App extends React.Component {
     });
   };
 
+  fetchFavoriteTracks = async () => {
+    const response = await getFavoriteSongs();
+    this.setState({ favoriteTracks: [...response] });
+  };
+
   render() {
     const {
       state,
       handleLogin,
       handleChange,
       searchArtist,
+      fetchFavoriteTracks,
     } = this;
+
     const { isLoading } = this.state;
 
     return (
@@ -96,13 +106,25 @@ class App extends React.Component {
               <Route
                 exact
                 path="/album/:id"
-                render={ (props) => (<Album
-                  { ...props }
-                  { ...state }
-                />) }
+                render={ (props) => (
+                  <Album
+                    { ...props }
+                    { ...state }
+                    fetchFavoriteTracks={ fetchFavoriteTracks }
+                  />
+                ) }
               />
 
-              <Route exact path="/favorites" component={ Favorites } />
+              <Route
+                exact
+                path="/favorites"
+                render={ () => (
+                  <Favorites
+                    { ...state }
+                    fetchFavoriteTracks={ fetchFavoriteTracks }
+                  />
+                ) }
+              />
 
               <Route exact path="/profile" component={ Profile } />
 

@@ -1,10 +1,11 @@
-import { shape, string } from 'prop-types';
 import React from 'react';
+import { shape, string, func, arrayOf } from 'prop-types';
+
+import getMusics from '../services/musicsAPI';
+
 import Header from '../components/Header';
 import Loading from '../components/Loading';
 import MusicCard from '../components/MusicCard';
-import { getFavoriteSongs } from '../services/favoriteSongsAPI';
-import getMusics from '../services/musicsAPI';
 
 export default class Album extends React.Component {
   state = {
@@ -12,26 +13,20 @@ export default class Album extends React.Component {
     albumTracks: [],
     artistName: '',
     collectionName: '',
-    favoriteTracks: [],
   };
 
   componentDidMount() {
     this.fetchMusics();
   }
 
-  fetchFavoriteTracks = async () => {
-    const response = await getFavoriteSongs();
-    this.setState({ favoriteTracks: [...response] });
-  };
-
   fetchMusics = async () => {
-    const { history } = this.props;
+    const { history, fetchFavoriteTracks } = this.props;
     const { pathname } = history.location;
     const albumId = pathname.split('/')[2];
 
     this.setState({ isLoading: true });
     const musicsResponse = await getMusics(albumId);
-    const favoriteSongsResponse = await getFavoriteSongs();
+    fetchFavoriteTracks();
     this.setState({ isLoading: false });
 
     const tracks = musicsResponse.filter((album) => album.trackName);
@@ -40,7 +35,6 @@ export default class Album extends React.Component {
       albumTracks: [...tracks],
       artistName: musicsResponse[0].artistName,
       collectionName: musicsResponse[0].collectionName,
-      favoriteTracks: [...favoriteSongsResponse],
     });
   };
 
@@ -50,11 +44,9 @@ export default class Album extends React.Component {
       artistName,
       collectionName,
       isLoading,
-
-      favoriteTracks,
     } = this.state;
 
-    const { fetchFavoriteTracks } = this;
+    const { favoriteTracks, fetchFavoriteTracks } = this.props;
 
     return (
       <div data-testid="page-album">
@@ -72,11 +64,11 @@ export default class Album extends React.Component {
                 {albumTracks.map((track) => (
                   <MusicCard
                     key={ track.trackName }
-                    { ...track }
-                    albumTracks={ albumTracks }
+                    track={ track }
                     fetchFavoriteTracks={ fetchFavoriteTracks }
                     checked={ favoriteTracks
-                      .some((favoriteTrack) => favoriteTrack.trackId === track.trackId) }
+                      .some(({ trackId }) => trackId === track.trackId) }
+
                   />
                 ))}
               </ul>
@@ -91,4 +83,8 @@ Album.propTypes = {
   history: shape({
     location: shape({ pathname: string }),
   }).isRequired,
+
+  favoriteTracks: arrayOf(shape({})).isRequired,
+
+  fetchFavoriteTracks: func.isRequired,
 };
