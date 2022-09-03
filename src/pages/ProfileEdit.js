@@ -1,4 +1,4 @@
-import { string, func } from 'prop-types';
+import { string, func, shape } from 'prop-types';
 import React from 'react';
 import Loading from '../components/Loading';
 import { updateUser } from '../services/userAPI';
@@ -60,7 +60,6 @@ export default class ProfileEdit extends React.Component {
 
     return (
       <div data-testid="page-profile-edit">
-
         {isLoading
           ? <Loading />
           : (
@@ -118,7 +117,6 @@ export default class ProfileEdit extends React.Component {
               </button>
             </form>
           )}
-
       </div>
     );
   }
@@ -130,4 +128,5 @@ ProfileEdit.propTypes = {
   userEmail: string.isRequired,
   userImage: string.isRequired,
   userName: string.isRequired,
+  history: shape({}).isRequired,
 };
