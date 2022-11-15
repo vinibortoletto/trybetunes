@@ -13,8 +13,8 @@ export default class Header extends React.Component {
         data-testid="header-component"
         className="bg-teal-900 px-4"
       >
-        <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between py-6">
+        <div className="">
+          <div className="max-w-7xl mx-auto flex justify-between py-6">
             <Logo />
             <UserInfo userName={ userName } />
           </div>
