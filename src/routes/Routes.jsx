@@ -1,3 +1,4 @@
+import { func, shape } from 'prop-types';
 import React from 'react';
 import { Route } from 'react-router-dom';
 import Album from '../pages/Album';
@@ -16,7 +17,7 @@ export default class Routes extends React.Component {
       handleLogin,
       searchArtist,
       fetchFavoriteTracks,
-    } = this.props
+    } = this.props;
 
     return (
       <>
@@ -93,3 +94,11 @@ export default class Routes extends React.Component {
     );
   }
 }
+
+Routes.propTypes = {
+  state: shape({}).isRequired,
+  handleChange: func.isRequired,
+  handleLogin: func.isRequired,
+  searchArtist: func.isRequired,
+  fetchFavoriteTracks: func.isRequired,
+};
