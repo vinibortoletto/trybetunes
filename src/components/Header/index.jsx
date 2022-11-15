@@ -11,7 +11,7 @@ export default class Header extends React.Component {
     return (
       <header
         data-testid="header-component"
-        className="bg-gradient-to-r from-teal-600 to-green-600 px-4"
+        className="bg-teal-900 px-4"
       >
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between py-6">
