@@ -1,20 +1,11 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
-
 import { shape } from 'prop-types';
 import { createUser, getUser } from './services/userAPI';
 import { getFavoriteSongs } from './services/favoriteSongsAPI';
 import searchAlbumsAPI from './services/searchAlbumsAPI';
-
-import Search from './pages/Search';
-import Album from './pages/Album';
-import Favorites from './pages/Favorites';
-import Login from './pages/Login';
-import Profile from './pages/Profile';
-import ProfileEdit from './pages/ProfileEdit';
-import NotFound from './pages/NotFound';
-import Loading from './components/Loading';
 import Header from './components/Header';
+import Routes from './routes/Routes';
+import Loading from './components/Loading/Loading';
 
 class App extends React.Component {
   state = {
@@ -118,76 +109,13 @@ class App extends React.Component {
           : (
             <>
               <Header pathname={ pathname } userName={ userName } />
-
-              <Route
-                exact
-                path="/search"
-                render={ () => (
-                  <Search
-                    { ...state }
-                    handleChange={ handleChange }
-                    searchArtist={ searchArtist }
-                  />
-                ) }
+              <Routes
+                state={ { ...state } }
+                handleChange={ handleChange }
+                handleLogin={ handleLogin }
+                searchArtist={ searchArtist }
+                fetchFavoriteTracks={ fetchFavoriteTracks }
               />
-
-              <Route
-                exact
-                path="/album/:id"
-                render={ (props) => (
-                  <Album
-                    { ...props }
-                    { ...state }
-                    fetchFavoriteTracks={ fetchFavoriteTracks }
-                  />
-                ) }
-              />
-
-              <Route
-                exact
-                path="/favorites"
-                render={ () => (
-                  <Favorites
-                    { ...state }
-                    fetchFavoriteTracks={ fetchFavoriteTracks }
-                  />
-                ) }
-              />
-
-              <Route
-                exact
-                path="/profile"
-                render={ () => (
-                  <Profile
-                    { ...state }
-                  />) }
-              />
-
-              <Route
-                exact
-                path="/profile/edit"
-                render={ (props) => (
-                  <ProfileEdit
-                    { ...props }
-                    { ...state }
-                    handleChange={ handleChange }
-                  />) }
-              />
-
-              <Route
-                exact
-                path="/"
-                render={ (props) => (
-                  <Login
-                    { ...props }
-                    { ...state }
-                    handleLogin={ handleLogin }
-                    handleChange={ handleChange }
-                  />
-                ) }
-              />
-
-              <Route component={ NotFound } />
             </>
           )}
       </div>
@@ -196,8 +124,12 @@ class App extends React.Component {
   }
 }
 
+App.defaultProps = {
+  location: {},
+};
+
 App.propTypes = {
-  location: shape({}).isRequired,
+  location: shape({}),
 };
 
 export default App;
