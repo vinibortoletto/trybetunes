@@ -3,7 +3,7 @@ import { shape, string, func, arrayOf } from 'prop-types';
 
 import getMusics from '../services/musicsAPI';
 
-import Loading from '../components/Loading';
+import Loading from '../components/Loading/Loading';
 import MusicCard from '../components/MusicCard';
 
 export default class Album extends React.Component {

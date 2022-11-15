@@ -1,7 +1,7 @@
 import { string, number, bool, shape, func } from 'prop-types';
 import React from 'react';
 import { addSong, removeSong } from '../services/favoriteSongsAPI';
-import Loading from './Loading';
+import Loading from './Loading/Loading';
 
 export default class MusicCard extends React.Component {
   state = {

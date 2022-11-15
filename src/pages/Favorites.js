@@ -1,7 +1,7 @@
 import React from 'react';
 import { func, arrayOf, shape } from 'prop-types';
 
-import Loading from '../components/Loading';
+import Loading from '../components/Loading/Loading';
 import MusicCard from '../components/MusicCard';
 
 export default class Favorites extends React.Component {
