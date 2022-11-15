@@ -1,39 +1,57 @@
+import { string } from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default class Navigation extends React.Component {
   render() {
+    const { pathname } = this.props;
+    const activeButtonStyle = 'bg-teal-700';
+    const normalButtonStyle = 'bg-teal-800';
+
     return (
       <div>
-        <ul>
-          <li>
-            <Link
-              to="/search"
-              data-testid="link-to-search"
+        <ul className="grid grid-cols-3 text-center -mx-4 font-bold">
+          <Link
+            to="/search"
+            data-testid="link-to-search"
+          >
+            <li
+              className={ `hover:bg-teal-700 transition-all p-4 border-r border-teal-600
+              ${pathname === '/search' ? activeButtonStyle : normalButtonStyle}` }
             >
               Pesquisar
-            </Link>
-          </li>
+            </li>
+          </Link>
 
-          <li>
-            <Link
-              to="/favorites"
-              data-testid="link-to-favorites"
+          <Link
+            to="/favorites"
+            data-testid="link-to-favorites"
+          >
+            <li
+              className={ `hover:bg-teal-700 transition-all p-4 border-r border-teal-600
+              ${pathname === '/favorites' ? activeButtonStyle : normalButtonStyle}` }
             >
               Favoritos
-            </Link>
-          </li>
+            </li>
+          </Link>
 
-          <li>
-            <Link
-              to="/profile"
-              data-testid="link-to-profile"
+          <Link
+            to="/profile"
+            data-testid="link-to-profile"
+          >
+            <li
+              className={ `hover:bg-teal-700 transition-all p-4
+              ${pathname === '/profile' ? activeButtonStyle : normalButtonStyle}` }
             >
               Perfil
-            </Link>
-          </li>
+            </li>
+          </Link>
         </ul>
       </div>
     );
   }
 }
+
+Navigation.propTypes = {
+  pathname: string.isRequired,
+};
