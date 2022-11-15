@@ -108,7 +108,10 @@ class App extends React.Component {
           ? <Loading />
           : (
             <>
-              <Header pathname={ pathname } userName={ userName } />
+              {pathname !== '/' && (
+                <Header pathname={ pathname } userName={ userName } />
+              )}
+
               <Routes
                 state={ { ...state } }
                 handleChange={ handleChange }
