@@ -3,7 +3,7 @@ import { shape } from 'prop-types';
 import { createUser, getUser } from './services/userAPI';
 import { getFavoriteSongs } from './services/favoriteSongsAPI';
 import searchAlbumsAPI from './services/searchAlbumsAPI';
-import Header from './components/Header';
+import Header from './components/Header/Header';
 import Routes from './routes/Routes';
 import Loading from './components/Loading/Loading';
 
