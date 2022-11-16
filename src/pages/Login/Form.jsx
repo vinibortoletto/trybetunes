@@ -32,7 +32,7 @@ export default class Form extends React.Component {
             name="userName"
             value={ userName }
             onChange={ handleChange }
-            className="w-full p-2 rounded bg-neutral-600"
+            className="w-full p-2 rounded bg-neutral-600 placeholder:italic"
             placeholder="Nome de usuário"
           />
         </label>
