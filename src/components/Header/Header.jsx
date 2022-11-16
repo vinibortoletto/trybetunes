@@ -12,7 +12,7 @@ export default class Header extends React.Component {
     return (
       <header
         data-testid="header-component"
-        className="bg-teal-900 px-4"
+        className="bg-teal-900 px-4 mb-10"
       >
         <div className="">
           <div className="max-w-7xl mx-auto flex justify-between py-6">
