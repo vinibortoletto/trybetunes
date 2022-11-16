@@ -66,7 +66,8 @@ class App extends React.Component {
     });
   };
 
-  searchArtist = async () => {
+  searchArtist = async (event) => {
+    event.preventDefault();
     const { artist } = this.state;
     this.setState({ searchedArtist: artist });
 
