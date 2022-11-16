@@ -1,6 +1,6 @@
 import { string, func, shape } from 'prop-types';
 import React from 'react';
-import Loading from '../components/Loading';
+import Loading from '../components/Loading/Loading';
 import { updateUser } from '../services/userAPI';
 
 export default class ProfileEdit extends React.Component {
