@@ -1,6 +1,6 @@
 import { func, shape } from 'prop-types';
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Album from '../pages/Album';
 import Favorites from '../pages/Favorites';
 import Login from '../pages/Login/Login';
@@ -20,62 +20,7 @@ export default class Routes extends React.Component {
     } = this.props;
 
     return (
-      <>
-        <Route
-          exact
-          path="/search"
-          render={ () => (
-            <Search
-              { ...state }
-              handleChange={ handleChange }
-              searchArtist={ searchArtist }
-            />
-          ) }
-        />
-
-        <Route
-          exact
-          path="/album/:id"
-          render={ (props) => (
-            <Album
-              { ...props }
-              { ...state }
-              fetchFavoriteTracks={ fetchFavoriteTracks }
-            />
-          ) }
-        />
-
-        <Route
-          exact
-          path="/favorites"
-          render={ () => (
-            <Favorites
-              { ...state }
-              fetchFavoriteTracks={ fetchFavoriteTracks }
-            />
-          ) }
-        />
-
-        <Route
-          exact
-          path="/profile"
-          render={ () => (
-            <Profile
-              { ...state }
-            />) }
-        />
-
-        <Route
-          exact
-          path="/profile/edit"
-          render={ (props) => (
-            <ProfileEdit
-              { ...props }
-              { ...state }
-              handleChange={ handleChange }
-            />) }
-        />
-
+      <Switch>
         <Route
           exact
           path="/"
@@ -89,8 +34,58 @@ export default class Routes extends React.Component {
           ) }
         />
 
-        <Route component={ NotFound } />
-      </>
+        <Route
+          path="/search"
+          render={ () => (
+            <Search
+              { ...state }
+              handleChange={ handleChange }
+              searchArtist={ searchArtist }
+            />
+          ) }
+        />
+
+        <Route
+          path="/album/:id"
+          render={ (props) => (
+            <Album
+              { ...props }
+              { ...state }
+              fetchFavoriteTracks={ fetchFavoriteTracks }
+            />
+          ) }
+        />
+
+        <Route
+          path="/favorites"
+          render={ () => (
+            <Favorites
+              { ...state }
+              fetchFavoriteTracks={ fetchFavoriteTracks }
+            />
+          ) }
+        />
+
+        <Route
+          path="/profile"
+          render={ () => (
+            <Profile
+              { ...state }
+            />) }
+        />
+
+        <Route
+          path="/profile/edit"
+          render={ (props) => (
+            <ProfileEdit
+              { ...props }
+              { ...state }
+              handleChange={ handleChange }
+            />) }
+        />
+
+        <Route path="*" component={ NotFound } />
+      </Switch>
     );
   }
 }
