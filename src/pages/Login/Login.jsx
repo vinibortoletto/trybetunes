@@ -1,11 +1,15 @@
 import React from 'react';
-import { string, func } from 'prop-types';
+import { string, func, shape } from 'prop-types';
 import Logo from './Logo';
 import Form from './Form';
 
 export default class Login extends React.Component {
   render() {
-    const { userName, handleChange } = this.props;
+    const {
+      userName,
+      handleChange,
+      history,
+    } = this.props;
 
     return (
       <div
@@ -16,6 +20,7 @@ export default class Login extends React.Component {
         <Form
           userName={ userName }
           handleChange={ handleChange }
+          history={ history }
         />
       </div>
     );
@@ -29,4 +34,5 @@ Login.defaultProps = {
 Login.propTypes = {
   userName: string,
   handleChange: func.isRequired,
+  history: shape().isRequired,
 };
