@@ -1,7 +1,7 @@
 import { func, shape } from 'prop-types';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Album from '../pages/Album';
+import Album from '../pages/Album/Album';
 import Favorites from '../pages/Favorites';
 import Login from '../pages/Login/Login';
 import NotFound from '../pages/NotFound';

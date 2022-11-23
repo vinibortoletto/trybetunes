@@ -1,10 +1,12 @@
 import React from 'react';
 import { shape, string, func, arrayOf } from 'prop-types';
 
-import getMusics from '../services/musicsAPI';
+import getMusics from '../../services/musicsAPI';
 
-import Loading from '../components/Loading/Loading';
-import MusicCard from '../components/MusicCard';
+import Loading from '../../components/Loading/Loading';
+import MusicCard from '../../components/MusicCard';
+import AlbumTitle from './AlbumTitle';
+import TrackList from './TrackList';
 
 export default class Album extends React.Component {
   state = {
@@ -48,28 +50,21 @@ export default class Album extends React.Component {
     const { favoriteTracks, fetchFavoriteTracks } = this.props;
 
     return (
-      <div data-testid="page-album">
+      <div data-testid="page-album" className="px-6">
         {isLoading
           ? <Loading />
           : (
             <div>
-              <h1 data-testid="artist-name">
-                {artistName}
-              </h1>
-              <p data-testid="album-name">{`${collectionName} - ${artistName}`}</p>
+              <AlbumTitle
+                collectionName={ collectionName }
+                artistName={ artistName }
+              />
 
-              <ul>
-                {albumTracks.map((track) => (
-                  <MusicCard
-                    key={ track.trackName }
-                    track={ track }
-                    fetchFavoriteTracks={ fetchFavoriteTracks }
-                    checked={ favoriteTracks
-                      .some(({ trackId }) => trackId === track.trackId) }
-
-                  />
-                ))}
-              </ul>
+              <TrackList
+                albumTracks={ albumTracks }
+                fetchFavoriteTracks={ fetchFavoriteTracks }
+                favoriteTracks={ favoriteTracks }
+              />
             </div>
           )}
       </div>
