@@ -1,6 +1,6 @@
 import { func, arrayOf, shape } from 'prop-types';
 import React from 'react';
-import MusicCard from '../../components/MusicCard';
+import MusicCard from '../../components/MusicCard/MusicCard';
 
 export default class TrackList extends React.Component {
   render() {
@@ -11,7 +11,7 @@ export default class TrackList extends React.Component {
     } = this.props;
 
     return (
-      <ul>
+      <ul className="grid gap-4">
         {albumTracks.map((track) => (
           <MusicCard
             key={ track.trackName }
