@@ -11,16 +11,8 @@ export default class AlbumTitle extends React.Component {
           data-testid="artist-name"
           className="text-teal-600 font-bold uppercase text-2xl"
         >
-          {artistName}
-        </h2>
-
-        <h3
-          data-testid="album-name"
-          className="text-neutral-500 "
-        >
           {`${collectionName} - ${artistName}`}
-
-        </h3>
+        </h2>
       </div>
     );
   }

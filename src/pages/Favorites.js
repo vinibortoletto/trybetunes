@@ -2,7 +2,7 @@ import React from 'react';
 import { func, arrayOf, shape } from 'prop-types';
 
 import Loading from '../components/Loading/Loading';
-import MusicCard from '../components/MusicCard';
+import MusicCard from '../components/MusicCard/MusicCard';
 
 export default class Favorites extends React.Component {
   state = { isLoading: false };

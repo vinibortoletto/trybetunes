@@ -4,7 +4,6 @@ import { shape, string, func, arrayOf } from 'prop-types';
 import getMusics from '../../services/musicsAPI';
 
 import Loading from '../../components/Loading/Loading';
-import MusicCard from '../../components/MusicCard';
 import AlbumTitle from './AlbumTitle';
 import TrackList from './TrackList';
 
@@ -50,7 +49,10 @@ export default class Album extends React.Component {
     const { favoriteTracks, fetchFavoriteTracks } = this.props;
 
     return (
-      <div data-testid="page-album" className="px-6">
+      <div
+        data-testid="page-album"
+        className="px-6 max-w-xl mx-auto"
+      >
         {isLoading
           ? <Loading />
           : (
